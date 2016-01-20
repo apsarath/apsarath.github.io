@@ -1,0 +1,63 @@
+---
+layout:     post
+comments:	true
+title:      "Towards Artificial General Intelligence"
+date:       2016-01-19 12:00:00
+author:     "Sarath Chandar"
+header-img: "img/post-bg-05.jpg"
+---
+
+Recent success of Deep Learning in complex tasks like image recognition, speech recognition, and game playing has created a wave of discussions and arguments about Artificial General Intelligence (AGI) and [its potential threat to humanity](http://www.v3.co.uk/v3-uk/news/2419567/ai-weapons-are-a-threat-to-humanity-warn-hawking-musk-and-wozniak). Thanks to the media hype (and over-promising claims in the introductions and conclusions of recent research papers), people have started believing that science fictions will soon become a reality. Are we really close to solving artificial general intelligence? What are the essential characteristics an agent should possess to claim “the AGI agent” title? In this article, I will try to answer these questions from my point of view.
+
+Firstly, what is Artificial General Intelligence? Wikipedia defines AGI as follows:
+
+> "Artificial general intelligence (AGI) is the intelligence of a (hypothetical) machine that could successfully perform any intellectual task that a human being can."
+
+This is also referred to as Strong AI or Full AI. Firstly, do we have a system which has this AGI capability? Answer is NO. Then where is this recent progress in machine learning research leading us to? To answer this question, let us try to think about another related question. What will happen if someone comes up with a learning algorithm that achieves 0% error in [ImageNet](http://image-net.org/) classification task? Can that learning algorithm be used to create an AGI agent? Now we should go back to the definition of AGI. An AGI agent can successfully perform ***any*** intellectual task that a human being can. Achieving 0% error in image classification doesn’t guarantee that the same algorithm can answer questions (Question Answering) or play chess at even a novice chess player level. This immediately sheds some light on the reality. Several recent papers claim that their systems surpass human performance in a particular task. Whether this statement is true is a topic for separate debate. Even if this is true, we need not worry. Such systems will break as soon as you put them on a different job.
+
+Current systems are not sufficient to achieve AGI. Well, then what are necessary to achieve AGI? There might be several ways to approach this problem. But here are my thoughts about one possible way. Before explaining the roadmap towards AGI, let me describe five important characteristics any AGI system should possess.
+
+### Ability to multi-task *aka* multi-task learning:
+
+It is very clear that the general AI agent should be able to multi-task. An average human being can do 100s of tasks without significant effort. It is perfectly reasonable to expect this quality from an AGI agent. A system which calls itself an AGI agent should be able to describe images and at the same time answer your questions or recognize your friends. One naive way to achieve this is to learn multiple tasks independently using multiple models. However we do not exploit the common factors between related tasks in this method. A more elegant solution is where a single system can learn multiple tasks simultaneously. This is known as *multi-task learning* in the Machine Learning literature. The basic idea of multi-task learning is to design a single general learning algorithm that can learn multiple tasks simultaneously, with the hope that each task would help learning of other related tasks. Rich Caruana’s [PhD thesis](http://reports-archive.adm.cs.cmu.edu/anon/1997/CMU-CS-97-203.pdf) provides an excellent introduction to multi-task learning. 
+
+Recently there has been a fairly decent amount of progress in multi-task learning. For example, in language understanding (which is my primary interest), [Collobert et al., 2011](http://arxiv.org/abs/1103.0398) proposed a neural network method to learn multiple NLP tasks simultaneously and achieved near-state-of-the-art performance in all the tasks. Note that their system is not specialized to any single task while the state-of-the-art methods for each task are highly task-specific. Recent success in factoid question answering ([Bordes et al., 2015](http://arxiv.org/abs/1506.02075) and previous papers) is also based on multi-task learning where they multi-task question answering with paraphrase detection tasks. But, all these multi-tasking are in same source or very similar sources (It was “text” in these examples). Nevertheless, we are really far from general multi-task learning algorithms which can multi-task with a bunch of heterogeneous source domains (e.g., image, text, and speech signal).    
+
+### Ability to reuse the knowledge *aka* transfer learning:
+
+Remember the first time you started playing a video game? You might have taken a few weeks to become a pro-player in that game. But how much time did you take to master the next game? Probably, just a few days! This is an amazing capability of the human mind! We humans can seamlessly transfer our learning experience from one task to another related task and learn the new task much faster. This is known as *Transfer learning* in the machine learning literature. One can view multi-task learning as a transfer learning problem in the sense that the goal of multi-task learning is to transfer some knowledge between the tasks so that they help each other. However, it is just one type of transfer learning. You can also do transfer learning when you learn multiple tasks sequentially. Very recently [Rajendran et al., 2015a](http://arxiv.org/abs/1510.02879) and [Parisotto et al., 2015](http://arxiv.org/abs/1511.06342) proposed ways to do transfer learning across multiple decision making tasks. [Rajendran et al., 2015a](http://arxiv.org/abs/1510.02879) highlights a significant problem in transfer learning which is negative transfer between tasks (one task affecting the performance of another task) and proposes methods to avoid negative transfer. Both these work are preliminary steps towards solving general transfer learning problem and solving transfer learning is essential to have a generic AI system.
+
+### Learning from few examples *aka* zero-shot/one-shot learning:
+
+Let us assume we have a system which can do multi-task transfer learning. Is it sufficient? Can it achieve human-level performance? To say that a system has achieved human level performance, it should also be able to learn from similar amount of data (examples) to learn a task. How many examples does a kid require to learn to identify a dog? One or two? May be three. But the current image recognition system requires at least hundreds of examples to learn to identify dogs in the image. What an AGI agent really needs is the ability to pick up new tasks faster. This is known as *zero-shot/one-shot learning* in machine learning (learning from zero or one example respectively). Very recently, [Lake et al., 2015](http://www.cs.toronto.edu/~rsalakhu/papers/LakeEtAl2015Science.pdf) proposed an algorithm to do one-shot classification. This is a significant step towards the grand goal and more research in this direction is required.
+
+### Ability to make use of multiple modalities *aka* multimodal learning:
+
+As mentioned previously, most of the existing research focuses on multi-task transfer learning across similar sources. For example, [Chandar et al., 2015](http://arxiv.org/abs/1504.07225) proposes a framework to do multi-task transfer learning which is restricted to the case where sources are multiple languages and tasks are same but in different languages. But to call an algorithm a general purpose AI algorithm, it should be able to work with multiple modalities of information like text, image, speech, and video. Recently, researchers have started looking into this problem and we still do not have general algorithms which can take arbitrary set of modalities. For recent progress, have a look at [Ngiam et al., 2011](https://people.csail.mit.edu/khosla/papers/icml2011_ngiam.pdf), [Srivastava et al., 2014](http://jmlr.org/papers/volume15/srivastava14b/srivastava14b.pdf), [Rajendran et al., 2015b](http://arxiv.org/abs/1510.03519).
+
+### Ability to learn through feedback *aka* reinforcement learning:
+
+Again, let us assume that we have a multi-modal multi-task transfer learning algorithm. Can such an algorithm be completely supervised? Probably not. We humans learn a lot of tasks without any direct supervision. Instead we learn them mostly through interacting with environment (i.e., by taking a sequence of actions and having indirect feedback on the actions). Remember how you learned to ride a bicycle? Showing you videos of people riding bicycle would not have worked. Isn’t it right? You really learned to ride only when you tried it yourself and fell down a couple of times (negative reinforcement). This is the idea of *reinforcement learning*. In reinforcement learning, an agent interacts with the environment and learns through feedback. This is an essential capability for a general purpose AI agent. Reinforcement Learning is one of the oldest fields in machine learning and it has a wealthy literature by itself. However, we still lack RL agents who can learn tasks with very few trials and can take a large number of actions. This requires some serious research.
+
+### The Master Algorithm:
+
+Now let us consolidate all the necessary capabilities of an AGI agent. It should be able to perform
+
+1. multi-task learning
+2. transfer learning
+3. zero-shot/one-shot learning
+4. multi-modal learning
+5. reinforcement learning
+
+Such an algorithm would be a real master algorithm. I am reusing the word “Master Algorithm” from Pedro Domingo’s famous book “[The Master Algorithm](http://www.basicbooks.com/full-details?isbn=9780465065707)”. But we take completely different approaches. While his goal was to describe the master algorithm as a unification of different schools of machine learning, my goal is to describe the capabilities such a master algorithm should have. If we can have a system with all these capabilities, then such a system would perform many intellectual tasks that a human being can.
+
+Although I have focused on the aspect of learning algorithms in pursuing what we need to achieve AGI, apart from these, there are also many other problems that need to be solved on the way. e.g., some domain specific problems in computer vision, natural language processing, planning, search, control, etc. However, I believe that the five components that I identified here will play an important role in achieving AGI.
+
+A solution for artificial general intelligence is one of key approaches to understand how human brain works (assuming that the nature is an optimal player). Even if we can achieve inventing such a master algorithm, none of these capabilities would help the algorithm gain self-consciousness (are all humans self-conscious?) and I would say that the master algorithm which doesn’t know its existence is still not a threat to humanity, IF it does not get into the hands of evil people.
+
+I agree that there is an exponential progress in all these sub-fields. But we are not sure if the rate of the exponent is good enough to solve AGI in next few years. I am not being too optimistic and I would expect at least few more decades to have a baby AGI agent. OK. Let me go and work on my baby AGI agent ;)    
+
+
+**Note :** References are nowhere close to be exhaustive. Instead they are extremely biased around what I work on and what I have read.
+
+**Acknowledgements :** I would like to acknowledge all my friends who took time to give feedback on the initial drafts of this article. Special thanks to [Sungjin Ahn](http://www.ics.uci.edu/~sungjia/) for several iterations of feedback. I have improved my writing over this reinforcement learning process :)
